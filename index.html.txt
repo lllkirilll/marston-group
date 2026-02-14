@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html>
+<head><title>Marston Group</title></head>
+<body>
+    <h1>Привет из Вьетнама!</h1>
+    <p>Это сайт моей компании. Скоро здесь будет красиво.</p>
+</body>
+</html>
