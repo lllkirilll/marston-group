@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marston Group — Payment Solutions for Global Markets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0c;
+            --surface: #111114;
+            --surface-2: #1a1a1f;
+            --border: #2a2a30;
+            --text: #e8e8ec;
+            --text-muted: #8a8a95;
+            --accent: #c8ff3e;
+            --accent-dim: #a3cc32;
+            --accent-glow: rgba(200, 255, 62, 0.15);
+            --white: #ffffff;
+            --font-display: 'Instrument Serif', Georgia, serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== NOISE OVERLAY ===== */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(10, 10, 12, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            transition: all 0.3s;
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-logo span { color: var(--accent); }
+
+        .nav-links {
+            display: flex;
+            gap: 36px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            transition: color 0.2s;
+            letter-spacing: 0.01em;
+        }
+
+        .nav-links a:hover { color: var(--white); }
+
+        .nav-cta {
+            padding: 10px 28px;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            border-radius: 100px;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.25s;
+        }
+
+        .nav-cta:hover {
+            background: var(--white);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 30px rgba(200, 255, 62, 0.2);
+        }
+
+        .mobile-menu { display: none; background: none; border: none; cursor: pointer; }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 140px 24px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+            animation: pulseGlow 6s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+            50% { opacity: 0.8; transform: translateX(-50%) scale(1.1); }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            background: var(--surface);
+            animation: fadeUp 0.8s ease forwards;
+            opacity: 0;
+        }
+
+        .hero-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            line-height: 1.05;
+            font-weight: 400;
+            letter-spacing: -0.03em;
+            max-width: 900px;
+            animation: fadeUp 0.8s ease 0.15s forwards;
+            opacity: 0;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .hero-sub {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 540px;
+            margin: 28px auto 48px;
+            line-height: 1.7;
+            font-weight: 300;
+            animation: fadeUp 0.8s ease 0.3s forwards;
+            opacity: 0;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            animation: fadeUp 0.8s ease 0.45s forwards;
+            opacity: 0;
+        }
+
+        .btn-primary {
+            padding: 16px 40px;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            border-radius: 100px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            background: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(200, 255, 62, 0.25);
+        }
+
+        .btn-secondary {
+            padding: 16px 40px;
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.25s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-muted);
+            background: var(--surface);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== SCROLLING TICKER ===== */
+        .ticker {
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .ticker-track {
+            display: flex;
+            gap: 60px;
+            animation: scroll 25s linear infinite;
+        }
+
+        .ticker-item {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            flex-shrink: 0;
+        }
+
+        .ticker-item span { color: var(--accent); font-size: 0.5rem; }
+
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* ===== SECTION COMMON ===== */
+        section { padding: 120px 48px; }
+
+        .section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            max-width: 700px;
+        }
+
+        .section-title em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        /* ===== FEATURES ===== */
+        .features {
+            background: var(--surface);
+        }
+
+        .features-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .features-header .section-title {
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 44px 36px;
+            transition: all 0.35s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.35s;
+        }
+
+        .feature-card:hover::before { opacity: 1; }
+
+        .feature-card:hover {
+            border-color: rgba(200, 255, 62, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--surface-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 1.3rem;
+        }
+
+        .feature-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            font-weight: 400;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        /* ===== STATS ===== */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 1px;
+            background: var(--border);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 0;
+        }
+
+        .stat {
+            flex: 1;
+            text-align: center;
+            padding: 64px 24px;
+            background: var(--bg);
+            max-width: 320px;
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* ===== HOW IT WORKS ===== */
+        .how-it-works {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 48px;
+            margin-top: 64px;
+        }
+
+        .step {
+            position: relative;
+        }
+
+        .step-num {
+            font-family: var(--font-display);
+            font-size: 5rem;
+            color: var(--surface-2);
+            line-height: 1;
+            margin-bottom: 16px;
+            font-style: italic;
+        }
+
+        .step h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            font-weight: 400;
+        }
+
+        .step p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        /* ===== SOLUTIONS / PAYMENT METHODS ===== */
+        .solutions {
+            background: var(--surface);
+        }
+
+        .solutions-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .solutions-visual {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .solutions-visual::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+            pointer-events: none;
+        }
+
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .method-item {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 16px;
+            text-align: center;
+            transition: all 0.25s;
+        }
+
+        .method-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .method-item .method-icon {
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+        }
+
+        .method-item .method-name {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .solutions-text .section-sub {
+            color: var(--text-muted);
+            margin-top: 20px;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .solutions-list {
+            list-style: none;
+            margin-top: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .solutions-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .solutions-list li .check {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(200, 255, 62, 0.12);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* ===== MARKETS / GEOGRAPHY ===== */
+        .markets {
+            text-align: center;
+        }
+
+        .markets-header {
+            margin-bottom: 64px;
+        }
+
+        .markets-header .section-title { margin: 0 auto; }
+
+        .markets-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .market-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px 20px;
+            transition: all 0.3s;
+        }
+
+        .market-card:hover {
+            border-color: rgba(200, 255, 62, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .market-flag { font-size: 2rem; margin-bottom: 12px; }
+
+        .market-name {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .market-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== CONTACT FORM ===== */
+        .contact {
+            background: var(--surface);
+        }
+
+        .contact-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+        }
+
+        .contact-info .section-sub {
+            color: var(--text-muted);
+            margin-top: 20px;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            font-weight: 300;
+            max-width: 440px;
+        }
+
+        .contact-details {
+            margin-top: 48px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .contact-detail-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--surface-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .contact-detail-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .contact-detail-text strong {
+            display: block;
+            color: var(--text);
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .contact-form {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 48px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            letter-spacing: 0.03em;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--accent);
+        }
+
+        .form-group textarea { resize: vertical; min-height: 100px; }
+
+        .form-group select option { background: var(--surface-2); }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 16px;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            border-radius: 12px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+            margin-top: 8px;
+        }
+
+        .form-submit:hover {
+            background: var(--white);
+            box-shadow: 0 8px 30px rgba(200, 255, 62, 0.2);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            padding: 64px 48px 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            margin: 0 auto 48px;
+        }
+
+        .footer-brand .nav-logo { font-size: 1.8rem; }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 12px;
+            max-width: 300px;
+            line-height: 1.6;
+        }
+
+        .footer-columns {
+            display: flex;
+            gap: 80px;
+        }
+
+        .footer-col h4 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            margin-bottom: 16px;
+            font-weight: 400;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-col a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .footer-col a:hover { color: var(--accent); }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== SCROLL ANIMATIONS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .steps { grid-template-columns: 1fr; gap: 32px; }
+            .solutions-content { grid-template-columns: 1fr; }
+            .markets-grid { grid-template-columns: repeat(2, 1fr); }
+            .contact-inner { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 16px 24px; }
+            .nav-links { display: none; }
+            .mobile-menu { display: block; }
+            section { padding: 80px 24px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .stats { flex-direction: column; }
+            .stat { max-width: none; }
+            .form-row { grid-template-columns: 1fr; }
+            .footer-top { flex-direction: column; gap: 40px; }
+            .footer-columns { gap: 40px; }
+            .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+            .contact-form { padding: 32px 24px; }
+            .markets-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <a href="#" class="nav-logo">Marston<span>.</span></a>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#solutions">Solutions</a></li>
+            <li><a href="#markets">Markets</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a href="#contact" class="nav-cta">Get Started</a>
+        <button class="mobile-menu" onclick="document.querySelector('.nav-links').classList.toggle('show')">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e8e8ec" stroke-width="2">
+                <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+        </button>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-badge">
+            <div class="dot"></div>
+            Payment infrastructure for modern business
+        </div>
+        <h1>Seamless payments<br>for <em>emerging</em> markets</h1>
+        <p class="hero-sub">We connect your business to local payment methods across the globe. Fast integration, transparent fees, real-time analytics.</p>
+        <div class="hero-actions">
+            <a href="#contact" class="btn-primary">
+                Start Integration
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a>
+            <a href="#features" class="btn-secondary">Learn More</a>
+        </div>
+    </section>
+
+    <!-- TICKER -->
+    <div class="ticker">
+        <div class="ticker-track">
+            <div class="ticker-item">Card Processing <span>●</span> Local APMs <span>●</span> Bank Transfers <span>●</span> Mobile Wallets <span>●</span> Cryptocurrency <span>●</span> SEPA <span>●</span> Open Banking <span>●</span> QR Payments <span>●</span> Buy Now Pay Later <span>●</span> Direct Debit <span>●</span> UPI <span>●</span> PIX</div>
+            <div class="ticker-item">Card Processing <span>●</span> Local APMs <span>●</span> Bank Transfers <span>●</span> Mobile Wallets <span>●</span> Cryptocurrency <span>●</span> SEPA <span>●</span> Open Banking <span>●</span> QR Payments <span>●</span> Buy Now Pay Later <span>●</span> Direct Debit <span>●</span> UPI <span>●</span> PIX</div>
+        </div>
+    </div>
+
+    <!-- FEATURES -->
+    <section class="features" id="features">
+        <div class="features-header reveal">
+            <p class="section-label">Why Marston</p>
+            <h2 class="section-title">Built for businesses that <em>move fast</em></h2>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon">⚡</div>
+                <h3>Instant Settlement</h3>
+                <p>Receive funds in your account within hours, not days. Our optimized routing ensures the fastest settlement across all corridors.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">🔗</div>
+                <h3>Single API</h3>
+                <p>One integration — hundreds of payment methods. Our unified API abstracts away the complexity of local payment ecosystems.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">📊</div>
+                <h3>Real-time Analytics</h3>
+                <p>Full visibility into every transaction. Monitor conversion rates, identify failures, and optimize your payment flow in real time.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">🛡️</div>
+                <h3>Fraud Protection</h3>
+                <p>Advanced risk scoring and 3D-Secure authentication built into every transaction. Minimize chargebacks without sacrificing conversion.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">🌐</div>
+                <h3>Multi-Currency</h3>
+                <p>Accept and settle in 50+ currencies with competitive FX rates. Let your customers pay in their preferred currency.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">🤝</div>
+                <h3>Dedicated Support</h3>
+                <p>Personal account manager and 24/7 technical support. We're not just a provider — we're your payment partner.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <div class="stats">
+        <div class="stat reveal">
+            <div class="stat-number">50+</div>
+            <div class="stat-label">Countries Covered</div>
+        </div>
+        <div class="stat reveal">
+            <div class="stat-number">200+</div>
+            <div class="stat-label">Payment Methods</div>
+        </div>
+        <div class="stat reveal">
+            <div class="stat-number">99.9%</div>
+            <div class="stat-label">Uptime SLA</div>
+        </div>
+        <div class="stat reveal">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Technical Support</div>
+        </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works" id="how">
+        <div class="reveal">
+            <p class="section-label">How It Works</p>
+            <h2 class="section-title">Go live in <em>three steps</em></h2>
+        </div>
+        <div class="steps">
+            <div class="step reveal">
+                <div class="step-num">01</div>
+                <h3>Apply & Get Approved</h3>
+                <p>Fill out the form below. Our team reviews your application and sets up your merchant account within 24 hours.</p>
+            </div>
+            <div class="step reveal">
+                <div class="step-num">02</div>
+                <h3>Integrate the API</h3>
+                <p>Use our well-documented REST API with SDKs for all major languages. Most teams go live within a single sprint.</p>
+            </div>
+            <div class="step reveal">
+                <div class="step-num">03</div>
+                <h3>Start Accepting Payments</h3>
+                <p>Process transactions across emerging markets with full analytics, settlement reports, and ongoing optimization support.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOLUTIONS -->
+    <section class="solutions" id="solutions">
+        <div class="solutions-content">
+            <div class="solutions-visual reveal">
+                <div class="method-grid">
+                    <div class="method-item"><div class="method-icon">💳</div><div class="method-name">Visa / MC</div></div>
+                    <div class="method-item"><div class="method-icon">🏦</div><div class="method-name">Bank Transfer</div></div>
+                    <div class="method-item"><div class="method-icon">📱</div><div class="method-name">Mobile Pay</div></div>
+                    <div class="method-item"><div class="method-icon">🔄</div><div class="method-name">Open Banking</div></div>
+                    <div class="method-item"><div class="method-icon">₿</div><div class="method-name">Crypto</div></div>
+                    <div class="method-item"><div class="method-icon">📲</div><div class="method-name">QR Code</div></div>
+                    <div class="method-item"><div class="method-icon">🅿️</div><div class="method-name">PIX</div></div>
+                    <div class="method-item"><div class="method-icon">🇮🇳</div><div class="method-name">UPI</div></div>
+                    <div class="method-item"><div class="method-icon">🕑</div><div class="method-name">BNPL</div></div>
+                </div>
+            </div>
+            <div class="solutions-text reveal">
+                <p class="section-label">Payment Methods</p>
+                <h2 class="section-title">Every way your customers <em>want to pay</em></h2>
+                <p class="section-sub">We aggregate local and international payment methods so you can maximize conversion in every market you enter.</p>
+                <ul class="solutions-list">
+                    <li><div class="check">✓</div> Cards, wallets, bank transfers, and alternative payment methods</li>
+                    <li><div class="check">✓</div> Smart routing for optimal approval rates</li>
+                    <li><div class="check">✓</div> Cascading logic with automatic failover</li>
+                    <li><div class="check">✓</div> Tokenization and recurring payments</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- MARKETS -->
+    <section class="markets" id="markets">
+        <div class="markets-header reveal">
+            <p class="section-label">Coverage</p>
+            <h2 class="section-title">Expanding into <em>new territories</em></h2>
+        </div>
+        <div class="markets-grid">
+            <div class="market-card reveal">
+                <div class="market-flag">🌍</div>
+                <div class="market-name">Africa</div>
+                <div class="market-desc">M-Pesa, cards, mobile money</div>
+            </div>
+            <div class="market-card reveal">
+                <div class="market-flag">🌏</div>
+                <div class="market-name">Southeast Asia</div>
+                <div class="market-desc">GrabPay, GCash, DOKU</div>
+            </div>
+            <div class="market-card reveal">
+                <div class="market-flag">🌎</div>
+                <div class="market-name">Latin America</div>
+                <div class="market-desc">PIX, OXXO, Boleto</div>
+            </div>
+            <div class="market-card reveal">
+                <div class="market-flag">🇮🇳</div>
+                <div class="market-name">India</div>
+                <div class="market-desc">UPI, Paytm, Net Banking</div>
+            </div>
+            <div class="market-card reveal">
+                <div class="market-flag">🇹🇷</div>
+                <div class="market-name">Turkey</div>
+                <div class="market-desc">Local cards, bank transfer</div>
+            </div>
+            <div class="market-card reveal">
+                <div class="market-flag">🇧🇷</div>
+                <div class="market-name">Brazil</div>
+                <div class="market-desc">PIX, Boleto, local cards</div>
+            </div>
+            <div class="market-card reveal">
+                <div class="market-flag">🇪🇺</div>
+                <div class="market-name">Europe</div>
+                <div class="market-desc">SEPA, iDEAL, Sofort, Klarna</div>
+            </div>
+            <div class="market-card reveal">
+                <div class="market-flag">🇦🇪</div>
+                <div class="market-name">Middle East</div>
+                <div class="market-desc">Mada, KNET, local wallets</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT FORM -->
+    <section class="contact" id="contact">
+        <div class="contact-inner">
+            <div class="contact-info reveal">
+                <p class="section-label">Get Started</p>
+                <h2 class="section-title">Ready to scale your <em>payments?</em></h2>
+                <p class="section-sub">Tell us about your business and we'll set up a personalized demo. Our team typically responds within a few hours.</p>
+                <div class="contact-details">
+                    <div class="contact-detail">
+                        <div class="contact-detail-icon">✉</div>
+                        <div class="contact-detail-text">
+                            <strong>Email</strong>
+                            info@marston-group.com
+                        </div>
+                    </div>
+                    <div class="contact-detail">
+                        <div class="contact-detail-icon">💬</div>
+                        <div class="contact-detail-text">
+                            <strong>Telegram</strong>
+                            @marston_group
+                        </div>
+                    </div>
+                    <div class="contact-detail">
+                        <div class="contact-detail-icon">📍</div>
+                        <div class="contact-detail-text">
+                            <strong>Headquarters</strong>
+                            International
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form reveal" id="form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" placeholder="John">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" placeholder="Doe">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Business Email</label>
+                    <input type="email" placeholder="john@company.com">
+                </div>
+                <div class="form-group">
+                    <label>Company</label>
+                    <input type="text" placeholder="Your company name">
+                </div>
+                <div class="form-group">
+                    <label>Monthly Volume (USD)</label>
+                    <select>
+                        <option value="" disabled selected>Select range</option>
+                        <option>Under $10,000</option>
+                        <option>$10,000 – $50,000</option>
+                        <option>$50,000 – $250,000</option>
+                        <option>$250,000 – $1,000,000</option>
+                        <option>$1,000,000+</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea placeholder="Tell us about your business and payment needs..."></textarea>
+                </div>
+                <button class="form-submit" onclick="handleSubmit(this)">Submit Application →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-top">
+            <div class="footer-brand">
+                <a href="#" class="nav-logo">Marston<span>.</span></a>
+                <p>Payment infrastructure for businesses expanding into emerging markets worldwide.</p>
+            </div>
+            <div class="footer-columns">
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#solutions">Payment Methods</a></li>
+                        <li><a href="#markets">Markets</a></li>
+                        <li><a href="#">API Docs</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">AML Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2025 Marston Group. All rights reserved.</span>
+            <span>Payments made simple.</span>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, i * 80);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        reveals.forEach(el => observer.observe(el));
+
+        // Form handler
+        function handleSubmit(btn) {
+            btn.textContent = 'Sent! We\'ll be in touch ✓';
+            btn.style.background = '#2ecc71';
+            btn.style.color = '#fff';
+            btn.disabled = true;
+            setTimeout(() => {
+                btn.textContent = 'Submit Application →';
+                btn.style.background = '';
+                btn.style.color = '';
+                btn.disabled = false;
+            }, 3000);
+        }
+
+        // Smooth nav background
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 60) {
+                nav.style.borderBottomColor = 'rgba(255,255,255,0.08)';
+            } else {
+                nav.style.borderBottomColor = 'rgba(255,255,255,0.04)';
+            }
+        });
+    </script>
+</body>
+</html>
